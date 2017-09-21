@@ -104,11 +104,8 @@ namespace BethanysPieShop
                 .AddDataAnnotationsLocalization()
                 .AddMvcOptions(options =>
                 {
-                    //options.ModelBindingMessageProvider.ValueMustNotBeNullAccessor =
-                    //    s => $"You can't leave this {s} empty";
+                    options.ModelBindingMessageProvider.SetValueIsInvalidAccessor(s => $"You can't leave this {s} empty");
                 }
-
-
             );
 
             //response compression with gzip (performance chapter)
