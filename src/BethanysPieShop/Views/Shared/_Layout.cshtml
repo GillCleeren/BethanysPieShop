@@ -1,0 +1,116 @@
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+
+@using System.Security.Claims
+@using System.Threading.Tasks
+@using BethanysPieShop.Auth
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IAuthorizationService AuthorizationService
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    @*<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />*@
+
+    <title>@ViewBag.PageTitle</title>
+
+    <link rel="stylesheet" href="//ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+          asp-fallback-href="lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="hidden"
+          asp-fallback-test-property="visibility"
+          asp-fallback-test-value="hidden" />
+
+    <link href="~/Content/site.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script asp-src-include="lib/jquery/dist/jquery.js"></script>
+    <script asp-src-include="lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script asp-src-include="lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script asp-src-include="Scripts/**/*.js"
+            asp-src-exclude="Scripts/TempScripts/*.js"></script>
+
+    <title>Bethany's Pie Shop</title>
+    @Html.Raw(JavaScriptSnippet.FullScript)
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    
+                    <cache expires-sliding="@TimeSpan.FromSeconds(10)">
+                        @await Component.InvokeAsync("CategoryMenu")
+                    </cache>
+
+                    <li condition="SignInManager.IsSignedIn(User)"><a asp-controller="PieGift" asp-action="Index">Send a pie</a></li>
+
+                    <li><a asp-controller="Contact" asp-action="Index">Contact us</a></li>
+                    <li><a asp-controller="Home" asp-action="Index" asp-area="Promo">Promotions</a></li>
+                    @await Component.InvokeAsync("ShoppingCartSummary")
+
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrators"))
+                    {
+                        @await Component.InvokeAsync("AdminMenu")
+
+                        <li class="dropdown">
+                            <a asp-controller="PieManagement"
+                               asp-action="Index">Pie Management</a>
+                        </li>
+                    }
+                    <li>
+                        <a asp-controller="Pie" asp-action="Details" asp-route-id="30"
+                           asp-protocol="http" asp-host="www.bethanyspieshop.com" asp-fragment="details">
+                            Pie of the week
+                        </a>
+                    </li>
+                </ul>
+                @await Html.PartialAsync("LoginPartial")
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <p class="lead">
+                    <img class="img-responsive" alt="Bethany's Pie Shop'" src="~/Images/bethanylogo.png"  />
+                </p>
+            </div>
+            <div class="col-md-9">
+                @RenderBody()
+            </div>
+            @await Component.InvokeAsync("SystemStatusPage")
+            @await Html.PartialAsync("LanguageSelection")
+        </div>
+    </div>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/Content/site.css" />
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/Content/site.min.css" />
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

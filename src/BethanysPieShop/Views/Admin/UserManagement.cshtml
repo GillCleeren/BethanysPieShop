@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore
+@model IEnumerable<BethanysPieShop.Auth.ApplicationUser>
+
+<h2>User management</h2>
+
+@if (!Model.Any())
+{
+    <tr><td colspan="3" class="text-center">No User Accounts</td></tr>
+}
+else
+{
+    <table class="table table-condensed table-bordered" header header-content="User Management">
+        <tr>
+            <th>User ID</th>
+            <th>User name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach (IdentityUser user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+
+                <td>
+                    <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
+                        <a class="btn btn-sm btn-primary" asp-action="EditUser" asp-route-id="@user.Id">Edit</a>
+                        <button type="submit" onclick="return confirm('Do you really want to delete this user?');" class="btn btn-sm btn-danger">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+<p>
+    @*<a class="btn btn-primary" asp-action="AddUser">Add new user</a>*@
+    <a anchor-style="primary" asp-action="AddUser">Add new user</a>
+</p>

@@ -1,0 +1,19 @@
+﻿@model IList<string>
+
+@if (Model.Count > 0)
+{
+    <form asp-action="QuickEdit" method="post">
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            <div class="form-group">
+                <label>Pie name @(i + 1):</label>
+                <input id="pieNames" name="pieNames" asp-for="@Model[i]" class="form-control" />
+            </div>
+        }
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+}
+else
+{
+    <h2>There aren't any pies in the system</h2>
+}

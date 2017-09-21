@@ -1,0 +1,24 @@
+﻿@model List<Pie>
+
+<form asp-action="BulkEditPies" method="post">
+    @for (var i = 0; i < Model.Count; i++)
+    {
+
+        <div class="form-group">
+            <label asp-for="@Model[i].PieId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="@Model[i].PieId" class="form-control" readonly="readonly" />
+                <span asp-validation-for="@Model[i].PieId" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="@Model[i].Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="@Model[i].Name" class="form-control" />
+                <span asp-validation-for="@Model[i].Name" class="text-danger"></span>
+            </div>
+        </div>
+    }
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

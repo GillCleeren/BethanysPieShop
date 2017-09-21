@@ -1,0 +1,76 @@
+﻿@using System.Threading.Tasks
+@using BethanysPieShop.Auth
+@using Microsoft.AspNetCore.Identity
+@model LoginViewModel
+
+@inject SignInManager<ApplicationUser> SignInManager
+
+<h2>Please log in before placing an order.</h2>
+
+<h3>Login using an account on Bethany's Pie Shop...</h3>
+<form asp-controller="Account" asp-action="Login" method="post" class="form-horizontal" role="form">
+    <h4>Enter your details below</h4>
+    <hr />
+    <input type="hidden" asp-for="ReturnUrl" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="UserName" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="Log in" />
+        </div>
+    </div>
+
+</form>
+
+<div class="col-md-12">
+    <section>
+        <h4>Or use another service to log in!</h4>
+        @{
+            var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (loginProviders.Count == 0)
+            {
+                <div>
+                    <p>
+                        There are no external authentication services configured. See <a href="http://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                        for details on setting up this ASP.NET application to support logging in via external services.
+                    </p>
+                </div>
+            }
+            else
+            {
+
+                <a class="btn btn-info" asp-action="GoogleLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                    Google
+                </a>
+
+                @*<form asp-controller="Account" asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in loginProviders)
+                                {
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account">@provider.AuthenticationScheme</button>
+                                }
+                            </p>
+                        </div>
+                    </form>*@
+            }
+        }
+    </section>
+</div>
+

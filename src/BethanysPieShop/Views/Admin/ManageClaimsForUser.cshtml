@@ -1,0 +1,14 @@
+﻿@model ClaimsManagementViewModel
+
+<h2>Manage claims for user</h2>
+
+<form asp-controller="Admin" asp-action="ManageClaimsForUser">
+    <input type="hidden" name="userId" value="@Model.UserId" />
+    <select asp-for="ClaimId"
+            asp-items="@(new SelectList(Model.AllClaimsList))">
+        <option>Please select a claim</option>
+    </select>
+    <input class="btn btn-primary" value="Add claim for user" type="submit" />
+</form>
+
+<a asp-action="UserManagement" class="btn btn-primary">Done</a>

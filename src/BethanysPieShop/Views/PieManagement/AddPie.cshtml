@@ -1,0 +1,95 @@
+﻿@model PieEditViewModel
+
+<h2>Create a new pie</h2>
+
+<form asp-controller="PieManagement" asp-action="AddPie" method="post" class="form-horizontal" role="form">
+    <h4>Enter the pie details below</h4>
+    <hr />
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Pie.Name" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.Name" class="form-control" />
+            <span asp-validation-for="Pie.Name" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.ShortDescription" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.ShortDescription" class="form-control" />
+            <span asp-validation-for="Pie.ShortDescription" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.LongDescription" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.LongDescription" class="form-control" />
+            <span asp-validation-for="Pie.LongDescription" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.Price" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.Price" class="form-control" />
+            <span asp-validation-for="Pie.Price" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.ImageThumbnailUrl" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.ImageThumbnailUrl" class="form-control" />
+            <span asp-validation-for="Pie.ImageThumbnailUrl" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.ImageUrl" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.ImageUrl" class="form-control" />
+            <span asp-validation-for="Pie.ImageUrl" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.InStock" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.InStock" class="form-control" />
+            <span asp-validation-for="Pie.InStock" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.IsPieOfTheWeek" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Pie.IsPieOfTheWeek" class="form-control" />
+            <span asp-validation-for="Pie.IsPieOfTheWeek" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Pie.SugarLevel" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="Pie.SugarLevel" class="form-control"
+                    asp-items="@new SelectList(Enum.GetNames(typeof(SugarLevel)))"></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Categories" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="CategoryId" class="form-control"
+                    asp-items="Model.Categories"></select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="Create pie" />
+        </div>
+    </div>
+</form>

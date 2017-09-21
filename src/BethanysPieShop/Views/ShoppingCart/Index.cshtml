@@ -1,0 +1,47 @@
+﻿@tagHelperPrefix "custom:"
+
+@model ShoppingCartViewModel
+
+<h2>Your shopping cart</h2>
+<h4>Here are the delicious pies in your shopping cart.</h4>
+<table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+        <th>Selected amount</th>
+        <th>Pie</th>
+        <th class="text-right">Price</th>
+        <th class="text-right">Subtotal</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var line in Model.ShoppingCart.ShoppingCartItems)
+    {
+        <tr>
+            <td class="text-center">@line.Amount</td>
+            <td class="text-left">@line.Pie.Name</td>
+            <td class="text-right">@line.Pie.Price.ToString("c")</td>
+            <td class="text-right">
+                @((line.Amount * line.Pie.Price).ToString("c"))
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="3" class="text-right">Total:</td>
+        <td class="text-right">
+            @Model.ShoppingCartTotal.ToString("c")
+        </td>
+    </tr>
+    </tfoot>
+</table>
+
+@*<div progress-value="33">
+    </div>*@
+
+<custom:div progress-value="33">
+    </custom:div>
+
+<div class="text-center">
+    <a class="btn btn-primary" asp-controller="Order" asp-action="Checkout">Check out now!</a>
+</div>
