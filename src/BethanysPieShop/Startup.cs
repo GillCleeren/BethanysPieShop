@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using BethanysPieShop.Auth;
 using BethanysPieShop.Filters;
 using Microsoft.AspNetCore.Builder;
@@ -10,15 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BethanysPieShop.Models;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
-using Serilog;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.ResponseCompression;
 
@@ -27,15 +20,12 @@ namespace BethanysPieShop
 {
     public class Startup
     {
-        private IConfigurationRoot _configurationRoot;
-
-        public Startup(IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
-            _configurationRoot = new ConfigurationBuilder()
-                           .SetBasePath(hostingEnvironment.ContentRootPath)
-                           .AddJsonFile("appsettings.json")
-                           .Build();
+            Configuration = configuration;
         }
+
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
@@ -43,7 +33,7 @@ namespace BethanysPieShop
         {
 
             services.AddDbContext<AppDbContext>(options =>
-                                         options.UseSqlServer(_configurationRoot.GetConnectionString("DefaultConnection")));
+                                         options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
@@ -60,6 +50,7 @@ namespace BethanysPieShop
             services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));
             services.AddTransient<IOrderRepository, OrderRepository>();
             services.AddTransient<IPieReviewRepository, PieReviewRepository>();
+            services.AddTransient<DbInitializer>();
 
             services.AddAntiforgery();
             //services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
@@ -135,6 +126,7 @@ namespace BethanysPieShop
             //        options.SupportedUICultures = supportedCultures;
             //    });
 
+            // https://docs.microsoft.com/en-us/aspnet/core/migration/1x-to-2x/identity-2x
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -234,9 +226,6 @@ namespace BethanysPieShop
 
 
             });
-
-
-            DbInitializer.Seed(app);
 
         }
     }
