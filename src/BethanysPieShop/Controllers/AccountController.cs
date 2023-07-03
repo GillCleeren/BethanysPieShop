@@ -30,6 +30,7 @@ namespace BethanysPieShop.Controllers
             });
         }
 
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel loginViewModel)
@@ -57,6 +58,11 @@ namespace BethanysPieShop.Controllers
 
 
         public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult RegisterViaVsiaPornuhaTocjkaRu()
         {
             return View();
         }

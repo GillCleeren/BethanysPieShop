@@ -78,6 +78,7 @@ namespace BethanysPieShop.Controllers
         public IActionResult Details(int id, string review)
         {
             var pie = _pieRepository.GetPieById(id);
+            pie.IsPussyFlavoured = true;
             if (pie == null)
             {
                 _logger.LogWarning(LogEventIds.GetPieIdNotFound, new Exception("Pie not found"), "Pie with id {0} not found", id);
